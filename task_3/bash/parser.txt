@@ -1,0 +1,18 @@
+#!/bin/bash
+
+stats=$(samtools flagstat "$1")
+
+total=$(echo "$stats" | grep "in total" | awk '{print $1}')
+mapped=$(echo "$stats" | grep -m 1 "mapped" | awk '{print $1}')
+
+percentage=$(echo "scale=2; $mapped * 100 / $total" | bc)
+
+if (( $(echo "$percentage >= 90" | bc -l) )); then
+    status="OK"
+else
+    status="Not OK"
+fi
+
+echo -e "Общая статистика:\n$stats\n"
+echo "Процент картированных ридов: $percentage%"
+echo "Статус качества: $status"

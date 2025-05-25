@@ -1,0 +1,5 @@
+Установка:
+pip install apache-airflow
+
+Запуск:
+airflow standalone
